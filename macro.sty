@@ -1,0 +1,102 @@
+\ProvidesPackage{macro}[2017/1/25 v1.0]
+\usepackage{fancybox}
+\usepackage{ascmac}
+\usepackage{xparse}
+
+\NewDocumentCommand\Vec{O{e} o}{%
+    {%
+        \IfValueTF{#2}{%
+            \mbox{\boldmath$#1_#2$}
+        }{%
+            \mbox{\boldmath$#1$}
+        }
+    }
+}
+
+\NewDocumentCommand\bracket{m}{%
+    {%
+        \left(#1\right)
+    }
+}
+\NewDocumentCommand\SimplePdiff{m m}{%
+    {%
+        \frac{\partial#1} {\partial#2}
+    }
+}
+\NewDocumentCommand\pdiff{s t+ m m o o}{%
+    {%
+        %
+        % partial differential without bracket
+        %
+        \IfBooleanTF{#1}{%
+            %
+            % if it has assgined value
+            %
+            \IfValueTF{#5}{%
+                \IfValueTF{#6}{%
+                    {\left. \SimplePdiff{#3}{#4} \right|}_{#5}^{#6}
+                }{%
+                    {\left. \SimplePdiff{#3}{#4} \right|}_{#5}
+                }
+            }{%
+            %
+            % no value assgined
+            %
+                \SimplePdiff{#3}{#4}
+            }
+        }{%
+            %
+            % function style partial differential
+            %
+            \IfBooleanTF{#2}{%
+                \IfValueTF{#5}{%
+                    \SimplePdiff{#3}{#4} \bracket{#5}
+                }{%
+                    \SimplePdiff{#3}{#4} \bracket{#4}
+                }
+            }{%
+            %
+            % partial differential with bracket
+            %
+                \IfValueTF{#5}{%
+                    %
+                    % specify unchange variable
+                    %
+                    \bracket{\SimplePdiff{#3} {#4}}_{#5}
+                }{%
+                    \bracket{\SimplePdiff{#3} {#4}}
+                }
+            }
+        }
+    }
+}
+
+\NewDocumentCommand\intall{s o m m}{%
+    {%
+        \IfValueT{#2}{%
+            #2
+        }
+        \IfBooleanTF{#1}{%
+            \int_{-\infty}^{\infty}#3\bracket{#4} \mathrm{d}#4
+        }{%
+            \int_{-\infty}^{\infty}#3 \mathrm{d}#4
+        }
+    }
+}
+\NewDocumentCommand\inthalf{s t- o m m}{%
+    {%
+        \IfValueT{#3}{%
+            #3
+        }
+        \IfBooleanTF{#2}{%
+            \int_{-\infty}^{0}
+        }{%
+            \int_{0}^{\infty}
+        }
+        #4
+        \IfBooleanT{#1}{%
+            \bracket{#5}
+        }
+        \mathrm{d}#5
+    }
+}
