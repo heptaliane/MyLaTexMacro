@@ -71,32 +71,22 @@
     }
 }
 
-\NewDocumentCommand\intall{s o m m}{%
+\NewDocumentCommand\intall{s m m}{%
     {%
-        \IfValueT{#2}{%
-            #2
-        }
-        \IfBooleanTF{#1}{%
-            \int_{-\infty}^{\infty}#3\bracket{#4} \mathrm{d}#4
-        }{%
-            \int_{-\infty}^{\infty}#3 \mathrm{d}#4
-        }
+        \int_{-\infty}^{\infty}#2
+        \IfBooleanT{#1}{\bracket{#3}}
+        \mathrm{d}#3
     }
 }
-\NewDocumentCommand\inthalf{s t- o m m}{%
+\NewDocumentCommand\inthalf{s t- m m}{%
     {%
-        \IfValueT{#3}{%
-            #3
-        }
         \IfBooleanTF{#2}{%
             \int_{-\infty}^{0}
         }{%
             \int_{0}^{\infty}
         }
-        #4
-        \IfBooleanT{#1}{%
-            \bracket{#5}
-        }
-        \mathrm{d}#5
+        #3
+        \IfBooleanT{#1}{\bracket{#4}}
+        \mathrm{d}#4
     }
 }
