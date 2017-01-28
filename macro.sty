@@ -3,12 +3,16 @@
 \usepackage{ascmac}
 \usepackage{xparse}
 
-\NewDocumentCommand\Vec{O{e} o}{%
+\NewDocumentCommand\Vec{s m o}{%
     {%
-        \IfValueTF{#2}{%
-            \mbox{\boldmath$#1_#2$}
+        \IfBooleanTF{#1}{%
+            \mbox{\boldmath$e$}_#2
         }{%
-            \mbox{\boldmath$#1$}
+            \IfValueTF{#3}{%
+                \mbox{\boldmath$#2$}_#3
+            }{%
+                \mbox{\boldmath$#2$}
+            }
         }
     }
 }
